@@ -62,12 +62,19 @@ def main():
             if "!removeapproved" in comment.body.lower() and comment.author in get_mods() and not action_blacklisted(comment.id):
                 blacklist(comment.id)
 
+                try:
+                    next(SUBREDDIT.contributor(redditor = comment.submission.author))
+                except StopIteration:
+                    continue
+
                 SUBREDDIT.contributor.remove(comment.submission.author)
                 reply = comment.reply("/u/%s has been removed as an approved submitter from /r/%s for posting '[%s](%s)'. \n\n%s" % (
                     comment.submission.author, str(SUBREDDIT), comment.submission.title, "https://redd.it/" + comment.submission.title, CONFIG["tail"].replace("<>", str(SUBREDDIT))
                 ))
                 reply.mod.distinguish()
                 reply.mod.approve()
+
+                SUBREDDIT.flair.delete(comment.submission.author)
 
                 logging.info("Removed user /u/%s for the submission https://redd.it/%s" % (comment.submission.author, comment.submission.id))
 
