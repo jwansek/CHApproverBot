@@ -53,6 +53,8 @@ def main():
                     from_subreddit = SUBREDDIT
                 )
 
+                SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="2b56a12c-7c2f-11ea-9666-0e72ae1d5f77")
+
                 logging.info("Added user /u/%s for the submission https://redd.it/%s" % (submission.author, submission.id))
         
         for comment in SUBREDDIT.stream.comments(pause_after=-1):
