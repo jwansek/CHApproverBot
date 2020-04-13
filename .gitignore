@@ -6,6 +6,7 @@ __pycache__/
 # app security
 config.json
 approver_blacklist.csv
+pid.json
 
 # C extensions
 *.so

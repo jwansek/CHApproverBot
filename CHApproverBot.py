@@ -48,17 +48,19 @@ def main():
                 subj = CONFIG["subject"].replace("<>", str(SUBREDDIT))
                 submission = REDDIT.submission(url = "https://reddit.com" + log.target_permalink)
                 SUBREDDIT.contributor.add(submission.author)
-                submission.author.message(
-                    subj, 
-                    CONFIG["message"].replace("<>", "https://redd.it/" + submission.id), 
-                #    from_subreddit = SUBREDDIT
-                )
 
-                #for conv in SUBREDDIT.modmail.conversations():
-                #    if conv.subject.startswith(subj[:23]):
-                #        conv.archive()
+                if str(submission.author) not in get_mods():
+                    submission.author.message(
+                        subj, 
+                        CONFIG["message"].replace("<>", "https://redd.it/" + submission.id), 
+                    #    from_subreddit = SUBREDDIT
+                    )
 
-                SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="2b56a12c-7c2f-11ea-9666-0e72ae1d5f77")
+                    #for conv in SUBREDDIT.modmail.conversations():
+                    #    if conv.subject.startswith(subj[:23]):
+                    #        conv.archive()
+
+                    SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="2b56a12c-7c2f-11ea-9666-0e72ae1d5f77")
 
                 logging.info("Added user /u/%s for the submission https://redd.it/%s" % (submission.author, submission.id))
         
@@ -87,4 +89,8 @@ def main():
 
 
 if __name__ == "__main__":
+    with open("pid.json", "w") as f:
+        json.dump(os.getpid(), f)
+    
+    logging.info("=== RESTARTED ===")
     main()
