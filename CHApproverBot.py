@@ -53,12 +53,12 @@ def main():
                     submission.author.message(
                         subj, 
                         CONFIG["message"].replace("<>", "https://redd.it/" + submission.id), 
-                    #    from_subreddit = SUBREDDIT
+                        from_subreddit = SUBREDDIT
                     )
 
-                    #for conv in SUBREDDIT.modmail.conversations():
-                    #    if conv.subject.startswith(subj[:23]):
-                    #        conv.archive()
+                    for conv in SUBREDDIT.modmail.conversations():
+                       if conv.subject.startswith(subj[:23]) or conv.subject == "you are an approved user":
+                           conv.archive()
 
                     SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="2b56a12c-7c2f-11ea-9666-0e72ae1d5f77")
 
