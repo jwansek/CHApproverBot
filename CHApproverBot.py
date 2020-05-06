@@ -89,7 +89,7 @@ def main():
                        if conv.subject.startswith(subj[:23]) or conv.subject == "you are an approved user":
                            conv.archive()
 
-                    SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="2b56a12c-7c2f-11ea-9666-0e72ae1d5f77")
+                    SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="98777532-8f68-11ea-b499-0e35fed39131")
 
                     logging.info("Added user /u/%s for the submission https://redd.it/%s" % (submission.author, submission.id))
 
