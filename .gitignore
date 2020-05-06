@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+approved_users.pickle
 
 # app security
 config.json
