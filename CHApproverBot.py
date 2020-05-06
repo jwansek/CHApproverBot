@@ -47,45 +47,45 @@ def main():
                 
                 subj = CONFIG["subject"].replace("<>", str(SUBREDDIT))
                 submission = REDDIT.submission(url = "https://reddit.com" + log.target_permalink)
-                SUBREDDIT.contributor.add(submission.author)
+                # SUBREDDIT.contributor.add(submission.author)
 
                 if str(submission.author) not in get_mods():
-                    submission.author.message(
-                        subj, 
-                        CONFIG["message"].replace("<>", "https://redd.it/" + submission.id), 
-                        from_subreddit = SUBREDDIT
-                    )
+                    # submission.author.message(
+                    #     subj, 
+                    #     CONFIG["message"].replace("<>", "https://redd.it/" + submission.id), 
+                    #     from_subreddit = SUBREDDIT
+                    # )
 
-                    for conv in SUBREDDIT.modmail.conversations():
-                       if conv.subject.startswith(subj[:23]) or conv.subject == "you are an approved user":
-                           conv.archive()
+                    # for conv in SUBREDDIT.modmail.conversations():
+                    #    if conv.subject.startswith(subj[:23]) or conv.subject == "you are an approved user":
+                    #        conv.archive()
 
-                    SUBREDDIT.flair.set(submission.author, text = ":approved: Approved user", flair_template_id="98777532-8f68-11ea-b499-0e35fed39131")
+                    SUBREDDIT.flair.set(submission.author, text = ":userapproved: | Approved user", flair_template_id="98777532-8f68-11ea-b499-0e35fed39131")
 
                 logging.info("Added user /u/%s for the submission https://redd.it/%s" % (submission.author, submission.id))
         
-        for comment in SUBREDDIT.stream.comments(pause_after=-1):
-            if comment is None:
-                break
+        # for comment in SUBREDDIT.stream.comments(pause_after=-1):
+        #     if comment is None:
+        #         break
             
-            if "!removeapproved" in comment.body.lower() and comment.author in get_mods() and not action_blacklisted(comment.id):
-                blacklist(comment.id)
+        #     if "!removeapproved" in comment.body.lower() and comment.author in get_mods() and not action_blacklisted(comment.id):
+        #         blacklist(comment.id)
 
-                try:
-                    next(SUBREDDIT.contributor(redditor = comment.submission.author))
-                except StopIteration:
-                    continue
+        #         try:
+        #             next(SUBREDDIT.contributor(redditor = comment.submission.author))
+        #         except StopIteration:
+        #             continue
 
-                SUBREDDIT.contributor.remove(comment.submission.author)
-                reply = comment.reply("/u/%s has been removed as an approved submitter from /r/%s for posting '[%s](%s)'. \n\n%s" % (
-                    comment.submission.author, str(SUBREDDIT), comment.submission.title, "https://redd.it/" + comment.submission.title, CONFIG["tail"].replace("<>", str(SUBREDDIT))
-                ))
-                reply.mod.distinguish()
-                reply.mod.approve()
+        #         SUBREDDIT.contributor.remove(comment.submission.author)
+        #         reply = comment.reply("/u/%s has been removed as an approved submitter from /r/%s for posting '[%s](%s)'. \n\n%s" % (
+        #             comment.submission.author, str(SUBREDDIT), comment.submission.title, "https://redd.it/" + comment.submission.title, CONFIG["tail"].replace("<>", str(SUBREDDIT))
+        #         ))
+        #         reply.mod.distinguish()
+        #         reply.mod.approve()
 
-                SUBREDDIT.flair.delete(comment.submission.author)
+        #         SUBREDDIT.flair.delete(comment.submission.author)
 
-                logging.info("Removed user /u/%s for the submission https://redd.it/%s" % (comment.submission.author, comment.submission.id))
+        #         logging.info("Removed user /u/%s for the submission https://redd.it/%s" % (comment.submission.author, comment.submission.id))
 
 
 if __name__ == "__main__":
